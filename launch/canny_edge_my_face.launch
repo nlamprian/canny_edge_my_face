@@ -1,0 +1,9 @@
+<launch>
+    <arg name="camera_name" default="cv_camera" />
+
+    <node name="$(arg camera_name)" pkg="cv_camera" type="cv_camera_node" />
+
+    <node name="canny_edge_my_face" pkg="canny_edge_my_face" type="canny_edge_my_face_node">
+        <remap from="image_raw" to="$(arg camera_name)/image_raw" />
+    </node>
+</launch>
