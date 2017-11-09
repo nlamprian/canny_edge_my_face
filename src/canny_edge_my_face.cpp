@@ -1,3 +1,5 @@
+#include <set>
+
 #include <opencv2/imgproc.hpp>
 
 #include "canny_edge_my_face/canny_edge_my_face.h"
@@ -55,5 +57,10 @@ void CannyEdgeMyFace::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
 void CannyEdgeMyFace::reconfigureCallback(CannyEdgeMyFaceConfig& config,
                                           uint32_t /*level*/) {
   canny_low_threshold_ = config.canny_low_threshold;
-  canny_kernel_size_ = config.canny_kernel_size;
+
+  std::set<int> valid_kernel_sizes{3, 5, 7};
+  if (valid_kernel_sizes.count(config.canny_kernel_size))
+    canny_kernel_size_ = config.canny_kernel_size;
+  else
+    config.canny_kernel_size = canny_kernel_size_;
 }
